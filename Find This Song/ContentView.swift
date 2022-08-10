@@ -8,9 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @State private var searchText = ""
+    var searchPhraseWithoutSpaces: String {
+        searchText.replacingOccurrences(of: " ", with: "%20")
+    }
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            
+            
+            
+            VStack {
+                HStack {
+                    TextField("Search", text: $searchText)
+                        .onTapGesture {
+                            searchText = ""
+                        }
+                    NavigationLink{
+                        ResultsView(searchText: searchPhraseWithoutSpaces)
+                    }label:{
+                        Image(systemName: "arrow.forward.circle.fill")
+                            .foregroundColor(colorScheme == .light ? .black : .white)
+                            .font(.system(size: 30))
+                    }
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 50)
+                        .fill(.regularMaterial)
+                )
+                
+                
+                .padding()
+                Spacer()
+            }
+            .navigationTitle("Search song or artist")
+            .navigationBarTitleDisplayMode(.inline)
+            
+        }
     }
 }
 
